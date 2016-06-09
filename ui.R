@@ -1,20 +1,33 @@
-#
-# This is the user-interface definition of a Shiny web application. You can
-# run the application by clicking 'Run App' above.
-#
-# Find out more about building applications with Shiny here:
-# 
-#    http://shiny.rstudio.com/
-#
-
-
 library(shiny)
 
-shinyUI(pageWithSidebar(  
-  headerPanel("Example plot"),  
-  sidebarPanel(    
-    sliderInput('mu', 'Guess at the mu',value = 70, min = 60, max = 80, step = 0.05)  ), 
-  mainPanel(    
-    plotOutput('myHist')  
+shinyUI(fluidPage(
+  # application header
+  titlePanel(title = h3("Expoloring Linear Models with MTCARS Dataset")),
+  sidebarLayout(
+    # sidebar panel for user input
+    sidebarPanel(
+      selectInput("vars", "Choose Variables for Model",
+                  c("Cylinders" = "cyl",
+                    "Displacement" = "disp",
+                    "Horsepower" = "hp",
+                    "Weight" = "wt",
+                    "Transmission" = "am"),
+                  selected = "am",
+                  multiple = TRUE,
+                  selectize = TRUE)
+    ),
+    
+    # main panel
+    mainPanel(
+      tabsetPanel(
+        tabPanel("Model Summary",
+                 verbatimTextOutput("summ")),
+        tabPanel("Plot",
+                 plotOutput("myplot")),
+        tabPanel("Formula",
+                 wellPanel(tags$div(style="text-align: center",textOutput("theModel"))))
+      )
+    )
   )
+  
 ))
