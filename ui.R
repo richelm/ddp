@@ -14,18 +14,24 @@ shinyUI(fluidPage(
                     "Transmission" = "am"),
                   selected = "am",
                   multiple = TRUE,
-                  selectize = TRUE)
+                  selectize = TRUE),
+      helpText(h3("Help Text"),"Put help here",
+               "You can have mulitple lines.",
+               "Do long line wrap around? That would be nice if they did. Would make it easier.",
+               br(),br(),
+               "It seems they do.")
     ),
     
     # main panel
     mainPanel(
       tabsetPanel(
+        tabPanel("modelFormula",
+                 tags$div(style="margin: auto;padding: 50px 50px 50px 50px",
+                          textOutput("theModel"))),
         tabPanel("Model Summary",
                  verbatimTextOutput("summ")),
         tabPanel("Plot",
-                 plotOutput("myplot")),
-        tabPanel("Formula",
-                 wellPanel(tags$div(style="text-align: center",textOutput("theModel"))))
+                 plotOutput("myplot"))
       )
     )
   )

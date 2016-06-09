@@ -5,11 +5,11 @@ shinyServer(
   function(input, output) {
     
     modelFit <- reactive({
-      f <- paste("mpg ~ ",gsub(", ","+",toString(input$vars)))
-      lm(f,data = mtcars)
+      modelFormula <- as.formula(paste("mpg~",paste(input$vars,collapse="+")))
+      lm(modelFormula,data = mtcars)
     })
     
-    output$theModel <- renderText(paste("mpg ~ ",gsub(", ","+",toString(input$vars))))
+    output$theModel <- renderText(paste("mpg~",paste(input$vars,collapse="+")))
     output$summ <- renderPrint({
       summary(modelFit())
     })
