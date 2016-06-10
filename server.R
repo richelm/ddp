@@ -5,17 +5,39 @@ shinyServer(
   function(input, output) {
     
     modelFit <- reactive({
-      modelFormula <- as.formula(paste("mpg~",paste(input$vars,collapse="+")))
-      lm(modelFormula,data = mtcars)
+      model <- as.formula(paste("mpg ~ am+",paste(input$vars,collapse="+")))
+      lm(model,data = mtcars)
     })
+
+    output$theModel <- renderText(paste("model: mpg~am+",paste(input$vars,collapse="+")))
     
-    output$theModel <- renderText(paste("mpg~",paste(input$vars,collapse="+")))
     output$summ <- renderPrint({
       summary(modelFit())
     })
     
-    output$myplot <- renderPlot({
+    output$ResidualsFitted <- renderPlot({
+      plot(modelFit(),which=1)
+    })
+    
+    output$NormalQQ <- renderPlot({
       plot(modelFit(),which=2)
     })
+    
+    output$ScaleLocation <- renderPlot({
+      plot(modelFit(),which=3)
+    })
+    
+    output$CooksDistance <- renderPlot({
+      plot(modelFit(),which=4)
+    })
+    
+    output$ResidualsLeverage <- renderPlot({
+      plot(modelFit(),which=5)
+    })
+    
+    output$CooksdistLeverage <- renderPlot({
+      plot(modelFit(),which=6)
+    })
+    
   }
 )
