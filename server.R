@@ -14,6 +14,10 @@ shinyServer(
       summary(modelFit())
     })
     
+    output$corVars <- renderPrint({
+      cor(mtcars)[1,]  
+    })
+    
     output$ResidualsFitted <- renderPlot({
       plot(modelFit(),which=1)
     })
