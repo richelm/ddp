@@ -3,13 +3,12 @@ data("mtcars")
 
 shinyServer(
   function(input, output) {
-    
     modelFit <- reactive({
-      model <- as.formula(paste("mpg ~ am+",paste(input$vars,collapse="+")))
+      model <- as.formula(paste(c(c("mpg ~ am"),input$vars),collapse = "+"))
       lm(model,data = mtcars)
     })
 
-    output$theModel <- renderText(paste("model: mpg~am+",paste(input$vars,collapse="+")))
+    output$theModel <- renderText(paste(c(c("model: mpg ~ am"),input$vars),collapse = " + "))
     
     output$summ <- renderPrint({
       summary(modelFit())

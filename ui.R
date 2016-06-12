@@ -5,14 +5,14 @@ shinyUI(fluidPage(
   titlePanel(title = h3("Expoloring Linear Models with MTCARS Dataset")),
 
   column(4, wellPanel(
-    selectInput("vars", "Choose Variables for Model",
-                c("Cylinders" = "cyl",
-                  "Displacement" = "disp",
-                  "Horsepower" = "hp",
-                  "Weight" = "wt"),
-                selected = "",
-                multiple = TRUE,
-                selectize = TRUE),
+    checkboxGroupInput("vars", "Choose Variables for Model",
+                       c("Number of cylinders" = "cyl",
+                         "Displacement (cu.in.)" = "disp",
+                         "Rear axle ratio" = "drat",
+                         "Gross horsepower" = "hp",
+                         "Weight (1000 lbs)" = "wt",
+                         "Number of forward gears" = "gear",
+                         "Number of carburetors" = "carb")),
     hr(),
     radioButtons("view",
                  "",
@@ -23,8 +23,21 @@ shinyUI(fluidPage(
                    "Cook's distance" = "CooksDistance",
                    "Residuals vs Leverage" = "ResidualsLeverage",
                    "Cook's dist vs Leverage" = "CooksdistLeverage")),
-    helpText("Choose variables from selection above to use in your model. ",
-             "Use the radio buttons to select among model summary and plots.")
+    radioButtons("showHelp",
+                 "Show Help",
+                 c("Yes" = "yes",
+                   "No" = "no"),
+                   selected = "no",
+                   inline = TRUE),
+    conditionalPanel(
+      "input.showHelp == 'yes'",
+      helpText("It has been shown that the type of transmission (am), automatic ",
+               "or manual, impacts the miles per gallon a car will get.",
+               " ",
+               "Select additional variables that may impact mgp to create linear models. Review",
+               "summary and plots to see which variable give the best model fit for predicting",
+               "mpg.")
+    )
   )),
   
   column(8,
